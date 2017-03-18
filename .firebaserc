@@ -1,6 +1,7 @@
 {
   "projects": {
-    "default": "sparks-production-3",
-    "sparks-production-3": "sparks-production-3"
+    "default": "sparks-staging-v3",
+    "production": "sparks-production-3",
+    "dev-sd": "sparks-development-sd"
   }
 }
