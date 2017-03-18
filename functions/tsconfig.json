@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "target": "es6",
+    "strictNullChecks": true,
+    "lib": [
+      "es6",
+      "es2015.promise",
+      "dom"
+    ],
+    "sourceMap": true
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

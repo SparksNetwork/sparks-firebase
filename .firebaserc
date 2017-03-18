@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "sparks-production-3",
+    "sparks-production-3": "sparks-production-3"
+  }
+}
