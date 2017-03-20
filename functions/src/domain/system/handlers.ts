@@ -1,6 +1,4 @@
 import { config } from '../../environment'
-import { keys } from 'ramda'
-import { objToRows } from '../../lib/firebase-collections'
 import { Opps } from '../opps/models'
 
 export async function checkConfigHandler(data: any) {
@@ -11,8 +9,8 @@ import { oppConfirmationRemindTopic } from '../opps/topics'
 
 export async function dailyRemindersHandler(data: any) {
   return Promise.all(
-    keys(await Opps.byConfirmationsOn())
-      .map(key => oppConfirmationRemindTopic.publish({key}))
+    (await Opps.byConfirmationsOn())
+      .map(({$key}) => $key && oppConfirmationRemindTopic.publish({key: $key}))
   )
 }
 

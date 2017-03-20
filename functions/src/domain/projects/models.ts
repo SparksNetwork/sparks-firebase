@@ -1,6 +1,11 @@
 import { FirebaseCollection } from '../../lib/firebase-collections'
 import { database } from '../../environment'
 
-class ProjectsCollection extends FirebaseCollection {}
+export interface ProjectModel {
+  name?: string,
+}
+export interface ProjectRecord extends ProjectModel { $key: string }
+
+class ProjectsCollection extends FirebaseCollection<ProjectModel, ProjectRecord> {}
 
 export const Projects = new ProjectsCollection(database, 'Projects')

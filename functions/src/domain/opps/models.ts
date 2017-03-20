@@ -1,7 +1,12 @@
 import { FirebaseCollection } from '../../lib/firebase-collections'
 import { database } from '../../environment'
 
-class OppsCollection extends FirebaseCollection {
+export interface OppModel {
+  projectKey?: string,
+}
+export interface OppRecord extends OppModel { $key: string }
+
+class OppsCollection extends FirebaseCollection<OppModel, OppRecord> {
   public async byConfirmationsOn() { return this.by('confirmationsOn', true) }
 }
 

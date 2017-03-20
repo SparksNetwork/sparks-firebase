@@ -26,13 +26,15 @@ export async function engagementSendConfirmationRemindersHandler(data: Engagemen
     const project = await Projects.one(opp.projectKey)
     const body = `${project.name}: Confirm your volunteer spot NOW, first-come first-serve while shifts remain! http://app.sparks.network on a computer.`
 
+    const to = profile.phone
+    if (!to) { throw 'engagementSendConfirmationRemindersHandler requires profile.phone'}
     return Engagements.update(data.key, {
       confirmReminderSMSLast: moment().toISOString(),
       confirmReminderSMSCount: (eng.confirmReminderSMSCount || 0) + 1,
     }).then(() =>
       smsRequestTopic.publish({
         body,
-        to: profile.phone,
+        to,
       })
     )
   }

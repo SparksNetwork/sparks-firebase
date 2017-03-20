@@ -3,7 +3,15 @@ import { database } from '../../environment'
 import * as moment from 'moment'
 import { filter } from 'ramda'
 
-class EngagementsCollection extends FirebaseCollection {
+export interface EngagementModel {
+  confirmReminderSMSLast?: string,
+  confirmReminderSMSCount?: number,
+  oppKey?: string,
+  profileKey?: string,
+}
+export interface EngagementRecord extends EngagementModel { $key: string }
+
+class EngagementsCollection extends FirebaseCollection<EngagementModel, EngagementRecord> {
   public async byOppKey(oppKey: string) { return this.by('oppKey', oppKey) }
 }
 

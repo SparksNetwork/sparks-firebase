@@ -15,16 +15,12 @@ import {
   filterByConfirmationReminderDue,
 } from '../engagements/models'
 
-import {
-  objToRows,
-} from '../../lib/firebase-collections'
-
 const filterNeedingRemind = (now: moment.Moment) =>
   pipe(filterByApproved, filterByConfirmationReminderDue(now))
 
 export async function oppSendConfirmationRemindersHandler(data: OppConfirmationRemindData) {
   console.log('* HANDLING: OppConfirmationRemind', data)
-  const engs = objToRows(await Engagements.byOppKey(data.key))
+  const engs = await Engagements.byOppKey(data.key)
   const filtered = filterNeedingRemind(moment())(engs)
   // const filtered = filter(e => e['$key'] === '-KXxmYCromNWzYvWhw40')(filterNeedingRemind(moment())(engs))
 
