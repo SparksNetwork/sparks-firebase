@@ -23,6 +23,6 @@ export async function ProfilesCreateWorker(data: ProfilesCreateCommand) {
     return Users.set(data.uid, existingProfile.$key)
   } else {
     return Profiles.push(merge(omitAdminOnly(data.payload.values), {uid: data.uid}))
-      .then(r => Users.set(data.uid, r.key))
+      .then(r => Users.set(data.uid, r))
   }
 }
