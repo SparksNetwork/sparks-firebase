@@ -5,7 +5,7 @@
     "start": "node ./dist/serve.js",
     "start:dev": "watch 'ts-node src/serve.ts' ./src",
     "build": "tsc",
-    "deploy": "npm run build; npm run deploy:functions; npm run deploy:gae",
+    "deploy": "npm run build && npm run deploy:functions && npm run deploy:gae",
     "deploy:functions": "firebase deploy --only functions",
     "deploy:gae": "echo WAT"
   },
