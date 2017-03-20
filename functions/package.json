@@ -3,6 +3,7 @@
   "description": "Cloud Functions for Firebase",
   "scripts": {
     "start": "node ./dist/serve.js",
+    "start:dev": "watch 'ts-node src/serve.ts' ./src",
     "build": "tsc",
     "deploy": "npm run build; npm run deploy:functions; npm run deploy:gae",
     "deploy:functions": "firebase deploy --only functions",
@@ -16,6 +17,7 @@
     "@types/node": "^7.0.8",
     "@types/ramda": "0.0.4",
     "@types/twilio": "0.0.7",
+    "capitalize": "^1.0.0",
     "dot-env": "0.0.1",
     "firebase": "^3.7.2",
     "firebase-admin": "^4.1.3",

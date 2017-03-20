@@ -1,20 +1,33 @@
 import * as Queue from 'firebase-queue'
+import { keys } from 'ramda'
+import * as capitalize from 'capitalize'
+
 import { database } from './environment'
+
+import * as workers from './workers'
+
+console.log('\n', '*** STARTING SERVER')
+console.log('* Loaded Workers...')
+keys(workers).forEach(k => console.log('  -', k))
 
 console.log('* Starting Queue')
 const q = new Queue(database.child('!queue'), (data, progress, resolve, reject) => {
-  console.log('received', data)
-  resolve()
+  handleTask(data).then(r => resolve())
 })
 console.log('* Queue started')
 
-import * as pubsub from '@google-cloud/pubsub'
-
-const t = pubsub().topic('TEST')
-
-console.log('topic', t)
-
-// export class Topic<T> {
-//   constructor(public name: string) {}
-//   public publish(m:T) { return pubsub().topic(this.name).publish(m) }
-// }
+async function handleTask(data) {
+  const workerName = `${capitalize(data.domain)}${capitalize(data.action)}Worker`
+  console.log('* Task for', workerName)
+  if (workers[workerName]) {
+    try {
+      await workers[workerName](data)
+    } catch (err) {
+      console.error('*** WORKER ERROR', workerName, err)
+    }
+  } else {
+    console.error(`*** NO WORKER FOR COMMAND ${workerName}`)
+    console.error(JSON.stringify(data, null, 2))
+  }
+  return true
+}
