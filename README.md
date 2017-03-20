@@ -146,15 +146,87 @@ Runs deploy:functions and deploy:gae
   /
     index.ts: the file that firebase-functions uses to deploy its bloody functions
     serve.ts: the target of `npm start` that google app engine uses to start a node flexible environment server
-    /topics: exported gcloud pubsub topic wrappers that:
-      read: give firebase-functions a name to listen to
-      write: give anything a pubsub to publish to
-    /persist: exported domain model facades
-      read: Promise-based methods that return collections of objects
-      write: Promise-based methods that let you do things to collection members
+    /domain
+      /$FOO - some vertical slice of functionality
+        handlers.ts
+          Things that respond as ff or fbq wokers
+            FooBarHandler
+        functions.ts
+          Exported firebase-functions using handlers
+        workers.ts
+          Exported fbq workers using handlers
+        models.ts:
+          Foos exported Collection object
+            read: Promise-based methods that return collections of objects
+            write: Promise-based methods that let you do things to collection members
+        topics.ts: 
+          BarMessage interface for topic payload
+          BarTopic exported Topic object
+            read: give firebase-functions a name to listen to
+            write: give anything a pubsub to publish to
     /lib: things we ought to move into separate npm projects but havent yet
       EERY BIT OF CODE IN HERE SHOULD BE INDEPENDENT OF PROJECT
 ```
 
+## /index.ts :: firebase-functions
+export * from './domain/profiles/functions'
+export * from './domain/sms/functions'
+...
 
-/fns
+## /index.ts :: firebase-functions
+import * as functions from 'firebase-functions'
+import { fooHandler } from './domain/profiles/handlers'
+import { barTopic } from './domain/profiles/topics'
+import { bazHandler } from './domain/sms/handlers'
+import { bozHandler, bozBizHandler } from './domain/boz/handlers'
+import { Bozs } from './domain/boz/models'
+...
+
+export const fooFunction = functions.https
+  .onRequest('/foo', httpHandler(fooHandler))
+
+export const bazFunction = functions.pubsub
+  .topic(barTopic.name).onPublish(pubsubHandler(bazHandler))
+
+export const bozFunction = functions.database
+  .ref('/${Bozs.key}/{key}').onWrite(databaseHandler(bozBizHandler))
+...
+
+## /serve.ts :: npm start / gae
+import { database } from 'environment'
+import { fooHandler } from './domain/profiles/handlers'
+import { barHandler } from './domain/projects/handlers'
+...
+
+FBQ(database.child('!queue', handle([
+  foo,
+  bar,
+  ...,
+]))
+
+FBQ(database.child('!queue', handle({
+  'Foo.faz': workerHandler(fooHandler),
+  'Bar.faf': workerHandler(barHandler),
+  ...,
+}))
+
+## /domain/sms/service.ts
+
+## /domain/sms/functions.ts
+import * as functions from 'firebase-functions'
+import { config } from '../config'
+import { smsRequestTopic } from './topics'
+import { send } from './service'
+
+export const sendSMS =
+  functions.pubsub.topic(smsRequestTopic.name)
+    .onPublish(pubSubContext(sendSMSHandler))
+
+### fs
+/domain
+  /sms
+    topics.ts
+    functions.ts
+    models.ts
+  /scheduled
+  /opps

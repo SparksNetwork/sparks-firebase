@@ -95,3 +95,9 @@ export function makeSumUpdater(parentCollection: string, foreignKey: string, sum
     return event.data.ref.root.child(parentCollection).child(foreignKeyValue).child(targetKey).set(total)
   }
 }
+
+export const makeConsoleLogHandler = name =>
+  async function consoleLogHandler(message) {
+    console.log(message)
+    return true
+  }

@@ -17,6 +17,7 @@ import { keys, zipObj, toUpper, values, mapObjIndexed } from 'ramda'
 interface AppConfig {
   TWILIO_ACCOUNT_SID: string,
   TWILIO_AUTH_TOKEN: string,
+  TWILIO_PHONE_NUMBER: string,
 }
 
 // these get set by the code block below

@@ -5,4 +5,5 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./topic"));
 __export(require("./firebase-functions-contexts"));
+__export(require("./firebase-collections"));
 //# sourceMappingURL=index.js.map
