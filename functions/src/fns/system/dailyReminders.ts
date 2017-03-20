@@ -6,9 +6,7 @@ import {
   objToRows
 } from '../../persist'
 
-import {
-  oppConfirmationRemindTopic,
-} from '../../topics'
+import { oppConfirmationRemindTopic } from '../../topics/oppConfirmationRemind'
 
 export async function dailyRemindersHandler(data: any) {
   return Promise.all(

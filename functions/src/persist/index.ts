@@ -2,14 +2,12 @@ import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import * as moment from 'moment'
 import { keys, merge, filter } from 'ramda'
+import { database } from '../environment'
 
 interface FirebaseRecord {
   $key:string
   [key:string]:any
 }
-
-admin.initializeApp(functions.config().firebase)
-const database = admin.database().ref('/')
 
 export const Engagements = {
   one: key => fetch('Engagements', key),

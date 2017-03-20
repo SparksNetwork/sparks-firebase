@@ -2,16 +2,25 @@
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "scripts": {
+    "start": "node ./dist/serve.js",
     "build": "tsc",
-    "deploy": "npm run build; firebase deploy --only functions"
+    "deploy": "npm run build; npm run deploy:functions; npm run deploy:gae",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:gae": "echo WAT"
   },
   "dependencies": {
+    "@google-cloud/datastore": "^0.7.1",
     "@google-cloud/pubsub": "^0.8.2",
+    "@types/firebase": "^2.4.31",
     "@types/moment": "^2.13.0",
     "@types/node": "^7.0.8",
+    "@types/ramda": "0.0.4",
     "@types/twilio": "0.0.7",
+    "dot-env": "0.0.1",
+    "firebase": "^3.7.2",
     "firebase-admin": "^4.1.3",
     "firebase-functions": "^0.5",
+    "firebase-queue": "^1.6.1",
     "gcloud": "^0.37.2",
     "moment": "^2.17.1",
     "ramda": "^0.23.0",

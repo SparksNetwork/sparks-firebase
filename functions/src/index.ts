@@ -3,12 +3,13 @@ import * as functions from 'firebase-functions'
 import {
   httpContext,
   pubSubContext,
-} from './lib'
+} from './lib/firebase-functions-contexts'
 
 import {
   makeConsoleLogHandler,
   sendSMSHandler,
   dailyRemindersHandler,
+  checkConfigHandler,
   oppSendConfirmationRemindersHandler,
   engagementSendConfirmationRemindersHandler,
   makeCompoundIndexBuilder,
@@ -17,15 +18,17 @@ import {
   makeSumUpdater,
 } from './fns'
 
-import {
-  smsRequestTopic,
-  oppConfirmationRemindTopic,
-  engagementConfirmationRemindTopic,
-} from './topics'
+import { smsRequestTopic } from './topics/smsRequest'
+import { oppConfirmationRemindTopic } from './topics/oppConfirmationRemind'
+import { engagementConfirmationRemindTopic } from './topics/engagementConfirmationRemind'
 
 export const dailyReminders =
   functions.https
     .onRequest(httpContext(dailyRemindersHandler))
+
+export const checkConfig =
+  functions.https
+    .onRequest(httpContext(checkConfigHandler))
 
 export const sendSMS =
   functions.pubsub.topic(smsRequestTopic.name)

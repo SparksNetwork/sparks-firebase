@@ -10,7 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const moment = require("moment");
 const ramda_1 = require("ramda");
-const topics_1 = require("../../topics");
+const smsRequest_1 = require("../../topics/smsRequest");
+const engagementConfirmationRemind_1 = require("../../topics/engagementConfirmationRemind");
 const persist_1 = require("../../persist");
 const filterNeedingRemind = (now) => ramda_1.pipe(persist_1.filterByApproved, persist_1.filterByConfirmationReminderDue(now));
 function oppSendConfirmationRemindersHandler(data) {
@@ -19,7 +20,7 @@ function oppSendConfirmationRemindersHandler(data) {
         const engs = persist_1.objToRows(yield persist_1.Engagements.byOppKey(data.key));
         const filtered = filterNeedingRemind(moment())(engs);
         // const filtered = filter(e => e['$key'] === '-KXxmYCromNWzYvWhw40')(filterNeedingRemind(moment())(engs))
-        return Promise.all(filtered.map(({ $key }) => topics_1.engagementConfirmationRemindTopic.publish({ key: $key })))
+        return Promise.all(filtered.map(({ $key }) => engagementConfirmationRemind_1.engagementConfirmationRemindTopic.publish({ key: $key })))
             .then(r => `${r.length} engagement confirmation reminders published`);
     });
 }
@@ -36,7 +37,7 @@ function engagementSendConfirmationRemindersHandler(data) {
             return persist_1.Engagements.update(data.key, {
                 confirmReminderSMSLast: moment().toISOString(),
                 confirmReminderSMSCount: (eng.confirmReminderSMSCount || 0) + 1,
-            }).then(() => topics_1.smsRequestTopic.publish({
+            }).then(() => smsRequest_1.smsRequestTopic.publish({
                 body,
                 to: profile.phone,
             }));

@@ -1,17 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
-const lib_1 = require("./lib");
+const firebase_functions_contexts_1 = require("./lib/firebase-functions-contexts");
 const fns_1 = require("./fns");
-const topics_1 = require("./topics");
+const smsRequest_1 = require("./topics/smsRequest");
+const oppConfirmationRemind_1 = require("./topics/oppConfirmationRemind");
+const engagementConfirmationRemind_1 = require("./topics/engagementConfirmationRemind");
 exports.dailyReminders = functions.https
-    .onRequest(lib_1.httpContext(fns_1.dailyRemindersHandler));
-exports.sendSMS = functions.pubsub.topic(topics_1.smsRequestTopic.name)
-    .onPublish(lib_1.pubSubContext(fns_1.sendSMSHandler));
-exports.oppSendConfirmationReminders = functions.pubsub.topic(topics_1.oppConfirmationRemindTopic.name)
-    .onPublish(lib_1.pubSubContext(fns_1.oppSendConfirmationRemindersHandler));
-exports.engagementSendConfirmationReminders = functions.pubsub.topic(topics_1.engagementConfirmationRemindTopic.name)
-    .onPublish(lib_1.pubSubContext(fns_1.engagementSendConfirmationRemindersHandler));
+    .onRequest(firebase_functions_contexts_1.httpContext(fns_1.dailyRemindersHandler));
+exports.checkConfig = functions.https
+    .onRequest(firebase_functions_contexts_1.httpContext(fns_1.checkConfigHandler));
+exports.sendSMS = functions.pubsub.topic(smsRequest_1.smsRequestTopic.name)
+    .onPublish(firebase_functions_contexts_1.pubSubContext(fns_1.sendSMSHandler));
+exports.oppSendConfirmationReminders = functions.pubsub.topic(oppConfirmationRemind_1.oppConfirmationRemindTopic.name)
+    .onPublish(firebase_functions_contexts_1.pubSubContext(fns_1.oppSendConfirmationRemindersHandler));
+exports.engagementSendConfirmationReminders = functions.pubsub.topic(engagementConfirmationRemind_1.engagementConfirmationRemindTopic.name)
+    .onPublish(firebase_functions_contexts_1.pubSubContext(fns_1.engagementSendConfirmationRemindersHandler));
 exports.assignmentUpdateEngagementShiftIndex = functions.database.ref('/Assignments/{key}')
     .onWrite(fns_1.makeCompoundIndexBuilder(['engagementKey', 'shiftKey']));
 exports.assignmentBlockDuplicateForEngagementShiftIndex = functions.database.ref('/Assignments/{key}')

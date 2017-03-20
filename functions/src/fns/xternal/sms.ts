@@ -1,6 +1,8 @@
 import * as functions from 'firebase-functions'
 import * as Twilio from 'twilio'
-import { smsRequestData } from '../../topics'
+
+import { smsRequestData } from '../../topics/smsRequest'
+
 
 export async function sendSMSHandler(data: smsRequestData) {
   const twilio = Twilio(

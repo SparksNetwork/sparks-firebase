@@ -8,16 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const admin = require("firebase-admin");
-const functions = require("firebase-functions");
 const moment = require("moment");
 const ramda_1 = require("ramda");
-admin.initializeApp(functions.config().firebase);
-const database = admin.database().ref('/');
+const environment_1 = require("../environment");
+// admin.initializeApp(functions.config().firebase)
+// const database = admin.database().ref('/')
 exports.Engagements = {
     one: key => fetch('Engagements', key),
-    update: (key, values) => database.child('Engagements').child(key).update(values),
-    ref: database.child('/Engagements'),
+    update: (key, values) => environment_1.database.child('Engagements').child(key).update(values),
+    ref: environment_1.database.child('/Engagements'),
     byOppKey: k => fetchBy('Engagements', 'oppKey', k)
 };
 exports.Opps = {
@@ -33,21 +32,21 @@ exports.Projects = {
 function fetch(coll, key) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('fetch', coll, key);
-        return database.child(coll).child(key).once('value').then(s => s.val());
+        return environment_1.database.child(coll).child(key).once('value').then(s => s.val());
     });
 }
 exports.fetch = fetch;
 function fetchAll(coll) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('fetch', coll);
-        return database.child(coll).once('value').then(s => s.val());
+        return environment_1.database.child(coll).once('value').then(s => s.val());
     });
 }
 exports.fetchAll = fetchAll;
 function fetchBy(coll, orderByChild, equalTo) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('fetch', coll, orderByChild, equalTo);
-        return database.child(coll).orderByChild(orderByChild).equalTo(equalTo).once('value').then(s => s.val());
+        return environment_1.database.child(coll).orderByChild(orderByChild).equalTo(equalTo).once('value').then(s => s.val());
     });
 }
 exports.fetchBy = fetchBy;

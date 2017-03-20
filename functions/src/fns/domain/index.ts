@@ -2,12 +2,9 @@ import * as functions from 'firebase-functions'
 import * as moment from 'moment'
 import { filter, pipe } from 'ramda'
 
-import {
-  oppConfirmationRemindData,
-  engagementConfirmationRemindData,
-  engagementConfirmationRemindTopic,
-  smsRequestTopic,
-} from '../../topics'
+import { smsRequestTopic } from '../../topics/smsRequest'
+import { oppConfirmationRemindData } from '../../topics/oppConfirmationRemind'
+import { engagementConfirmationRemindTopic, engagementConfirmationRemindData } from '../../topics/engagementConfirmationRemind'
 
 import {
   Engagements,

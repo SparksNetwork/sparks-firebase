@@ -1,6 +1,9 @@
 # Dist
 dist
 
+# Credentials
+*.credentials.json
+
 # Logs
 logs
 *.log

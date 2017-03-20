@@ -5,4 +5,5 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./consoleLogHandler"));
 __export(require("./dailyReminders"));
+__export(require("./checkConfig"));
 //# sourceMappingURL=index.js.map

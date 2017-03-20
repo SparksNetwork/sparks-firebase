@@ -10,11 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const ramda_1 = require("ramda");
 const persist_1 = require("../../persist");
-const topics_1 = require("../../topics");
+const oppConfirmationRemind_1 = require("../../topics/oppConfirmationRemind");
 function dailyRemindersHandler(data) {
     return __awaiter(this, void 0, void 0, function* () {
         return Promise.all(ramda_1.keys(yield persist_1.Opps.byConfirmationsOn())
-            .map(key => topics_1.oppConfirmationRemindTopic.publish({ key })));
+            .map(key => oppConfirmationRemind_1.oppConfirmationRemindTopic.publish({ key })));
     });
 }
 exports.dailyRemindersHandler = dailyRemindersHandler;
