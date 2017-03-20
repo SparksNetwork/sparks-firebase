@@ -8,14 +8,16 @@ Gotta do this to get the code and tools.
 
 #### getting ze code
 
-check out the code
+Check out the code!
+
 `$ git clone ...`
 
 #### installing global requirements
 
 you need this stuff on your dev machine:
 
-`$ npm install -g firebase-functions gcloud`
+* Google Cloud SDK: https://cloud.google.com/sdk/docs/#install_the_latest_cloud_tools_version_cloudsdk_current_version
+* Firebase CLI: `npm install -g firebase-tools`
 
 ### new project
 
