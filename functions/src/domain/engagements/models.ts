@@ -8,6 +8,7 @@ export interface EngagementModel {
   confirmReminderSMSCount?: number,
   oppKey?: string,
   profileKey?: string,
+  status?: string,
 }
 export interface EngagementRecord extends EngagementModel { $key: string }
 

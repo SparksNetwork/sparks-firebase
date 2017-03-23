@@ -1,5 +1,8 @@
 import * as functions from 'firebase-functions'
+import { FirebaseCollection } from './firebase-collections'
+
 import { keys, values, identity, any, sum } from 'ramda'
+import * as moment from 'moment'
 
 export function makeCompoundIndexBuilder(keys: Array<string>) {
   return async function(event: functions.Event<functions.database.DeltaSnapshot>) {
@@ -101,3 +104,26 @@ export const makeConsoleLogHandler = name =>
     console.log(message)
     return true
   }
+
+export function timeStampCreatedOn(event: functions.Event<functions.database.DeltaSnapshot>) {
+  console.log('key', event.data.ref.key, 'val', event.data.val())
+  if (event.data.previous.val()) {
+    console.log('PASS existing record')
+    return
+  }
+  event.data.ref.child('createdAt').set(moment().unix())
+}
+
+export function makeChildPropogator(srcField: string, collection: FirebaseCollection<any,any>, foreignKey: string, destField: string) {
+  return async function(event: functions.Event<functions.database.DeltaSnapshot>) {
+    const newVal = event.data.current.val()[srcField]
+    if (newVal === event.data.previous.val()[srcField]) {
+      console.log('PASS unchanged', srcField)
+      return false
+    }
+    return Promise.all(
+      (await collection.by(foreignKey, event.data.key))
+        .map(({$key}) => collection.update($key, {[destField]: newVal}) )
+    )
+  }
+}

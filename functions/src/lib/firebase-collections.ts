@@ -61,6 +61,11 @@ export class FirebaseCollection<TModel, TRecord> {
       })
   }
 
+  public async delete(key?: string) {
+    if (!key) { throw 'FirebaseCollection.delete requires key'}
+    return this.ref.child(key).remove()
+  }
+
   public path(s: string): string {
     return `/${this.ref.key}${s}`
   }

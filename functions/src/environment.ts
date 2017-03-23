@@ -1,4 +1,5 @@
 /*
+TODO: WHY THE SHENANIGANS
 Loads firebase and config vars based on execution enviroment.
 If this is run in firebase-functions:
   - it loads everything from functions.config(), refer to `firebase functions:config`

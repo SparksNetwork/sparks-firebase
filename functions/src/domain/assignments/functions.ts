@@ -3,6 +3,7 @@ import {
   makeCompoundIndexBuilder,
   makeDuplicateBlocker,
   makeCountUpdater,
+  timeStampCreatedOn,
 } from '../../lib/firebase-function-builders'
 
 import { Assignments } from './models'
@@ -18,3 +19,7 @@ export const assignmentBlockDuplicateForEngagementShiftIndex =
 export const assignmentCountShiftAssigned =
   functions.database.ref(Assignments.keyPath())
     .onWrite(makeCountUpdater('Shifts', 'shiftKey', 'assigned'))
+
+export const assignmentTimestampCreation =
+  functions.database.ref(Assignments.keyPath())
+    .onWrite(timeStampCreatedOn)
