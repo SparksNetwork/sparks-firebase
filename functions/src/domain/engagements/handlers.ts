@@ -11,6 +11,7 @@ import {
 import {
   Engagements,
   isConfirmationReminderDue,
+  engagementStatus,
 } from './models'
 
 import { Opps } from '../opps/models'
@@ -39,4 +40,9 @@ export async function engagementSendConfirmationRemindersHandler(data: Engagemen
     )
   }
   return true
+}
+
+export async function updateAllEngagementStatusHandler(data: any) {
+  const engs = await Engagements.all()
+  return Promise.all(engs.map(e => Engagements.update(e.$key, {status: engagementStatus(e)})))
 }

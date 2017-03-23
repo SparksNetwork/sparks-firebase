@@ -1,25 +1,15 @@
 import * as functions from 'firebase-functions'
+import { httpContext } from '../../lib/firebase-functions-contexts'
+
 import {
-  makeCompoundIndexBuilder,
-  makeDuplicateBlocker,
-  makeCountUpdater,
-  timeStampCreatedOn,
-} from '../../lib/firebase-function-builders'
+  updateAssignmentStatusHandler,
+  decayUnconfirmedAssignmentsHandler,
+} from './handlers'
 
-import { Assignments } from './models'
+export const updateAssignmentStatus =
+  functions.https
+    .onRequest(httpContext(updateAssignmentStatusHandler))
 
-export const assignmentUpdateEngagementShiftIndex =
-  functions.database.ref(Assignments.keyPath())
-    .onWrite(makeCompoundIndexBuilder(['engagementKey', 'shiftKey']))
-
-export const assignmentBlockDuplicateForEngagementShiftIndex =
-  functions.database.ref(Assignments.keyPath())
-    .onWrite(makeDuplicateBlocker('engagementKey|shiftKey'))
-
-export const assignmentCountShiftAssigned =
-  functions.database.ref(Assignments.keyPath())
-    .onWrite(makeCountUpdater('Shifts', 'shiftKey', 'assigned'))
-
-export const assignmentTimestampCreation =
-  functions.database.ref(Assignments.keyPath())
-    .onWrite(timeStampCreatedOn)
+export const decayUnconfirmedAssignments =
+  functions.https
+    .onRequest(httpContext(decayUnconfirmedAssignmentsHandler))

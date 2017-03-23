@@ -20,12 +20,12 @@ export class FirebaseCollection<TModel, TRecord> {
 
   public async all(): Promise<Array<TRecord>> {
     console.log('FBC all', this.ref.key)
-    return this.ref.once('value').then(s => toRows(s.val()))
+    return this.ref.once('value').then(s => toRows(s.val()) || [])
   }
 
   public async by(orderByChild: string, equalTo: any): Promise<Array<TRecord>> {
     console.log('FBC by', this.ref.key, orderByChild, equalTo)
-    return this.ref.orderByChild(orderByChild).equalTo(equalTo).once('value').then(s => toRows(s.val()))
+    return this.ref.orderByChild(orderByChild).equalTo(equalTo).once('value').then(s => toRows(s.val()) || [])
   }
 
   public async firstBy(orderByChild: string, equalTo: any): Promise<TRecord | null> {

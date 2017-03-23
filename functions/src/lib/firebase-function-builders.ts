@@ -93,7 +93,7 @@ export function makeSumUpdater(parentCollection: string, foreignKey: string, sum
       return
     }
     const childs = await collection.orderByChild(foreignKey).equalTo(foreignKeyValue).once('value').then(s => s.val())
-    const total = sum(values(childs).map(c => c[sumKey]))
+    const total = sum(values(childs).map(c => c[sumKey] || 0))
     console.log('TRIGGERED updating sum', parentCollection, foreignKeyValue, total)
     return event.data.ref.root.child(parentCollection).child(foreignKeyValue).child(targetKey).set(total)
   }
